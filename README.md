@@ -1,2 +1,5 @@
 # HexColoursTest
-Testing list of Hex colours in a tableview
+
+This is a simple project that loads a tableView from and array of colors in order to visualize them for testing and displays the color HEX string in white or black color depending on the darkness of the background color. 
+
+![Screenshot](Screenshot.jpeg?raw=true "Screenshot")
