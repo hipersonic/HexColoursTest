@@ -33,7 +33,6 @@ class ViewController: UIViewController {
                               0x5F9EA0,
                               0x00FA9A,
                               
-                              
                               //Orange
                               0xF2AA48,
                               0xF7C233,
@@ -43,13 +42,11 @@ class ViewController: UIViewController {
                               0xFFA500,
                               0xFF4500,
                               
-                              
                               //Red
                               0xF0744A,
                               0xC42B25,
                               0xE74C3C,
                               0xFF0000,
-                              
                               
                               //Blue
                               0x41335D,
@@ -64,7 +61,6 @@ class ViewController: UIViewController {
                               0x4B0082,
                               0x663399,
                               0x7B68EE,
-                              
                               
                               //Pink
                               0xC158E5,
@@ -105,28 +101,21 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return randomColorsPallet.count
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID") as! UITableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cellID") else {
+            return UITableViewCell()
+        }
+        
         let colorStr = randomColorsPallet[indexPath.row]
         let st = String(format:"#%02X", colorStr)
         cell.textLabel?.text = String(st)
         
         let backgroundColor = UIColor(rgbHex: colorStr)
-        cell.textLabel?.textColor = determineTextColor(for: backgroundColor)
+        cell.textLabel?.textColor = UIColor.determineTextColor(for: backgroundColor)
         cell.backgroundColor = backgroundColor
         
         return cell
     }
-    
-    
-    func determineTextColor(for backgroundColor: UIColor) -> UIColor {
-        var H: CGFloat = 0, S: CGFloat = 0, B: CGFloat = 0, A: CGFloat = 0, white: CGFloat = 0
-        backgroundColor.getHue(&H, saturation: &S, brightness: &B, alpha: &A)
-        backgroundColor.getWhite(&white, alpha: &A)
-        return (white <= 0.5 || B <= 0.5) ? UIColor.white : UIColor(rgbHex: 0x333333)
-    }
-    
 }
 
 
@@ -141,5 +130,12 @@ extension UIColor {
     
     convenience init(rgbHex: Int) {
         self.init(red:(rgbHex >> 16) & 0xff, green:(rgbHex >> 8) & 0xff, blue:rgbHex & 0xff)
+    }
+    
+    static func determineTextColor(for backgroundColor: UIColor) -> UIColor {
+        var H: CGFloat = 0, S: CGFloat = 0, B: CGFloat = 0, A: CGFloat = 0, white: CGFloat = 0
+        backgroundColor.getHue(&H, saturation: &S, brightness: &B, alpha: &A)
+        backgroundColor.getWhite(&white, alpha: &A)
+        return (white <= 0.5 || B <= 0.5) ? UIColor.white : UIColor(rgbHex: 0x333333)
     }
 }
